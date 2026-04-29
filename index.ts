@@ -16,8 +16,9 @@ const app = new Elysia()
 
   // --- CREATE ---
   .post('/interns', ({ body, set }) => {
+    const lastId = interns.at(-1)?.id ?? 0;
     const newIntern = {
-      id: interns.length > 0 ? interns[interns.length - 1].id + 1 : 1,
+      id: lastId + 1,
       name: body.name,
       role: body.role
     };
@@ -33,7 +34,7 @@ const app = new Elysia()
   })
 
 // --- PATCH (Partial Update) ---
-  // Postman mein PATCH select karein aur URL mein ID bhejein (e.g., /interns/1)
+  
   .patch('/interns/:id', ({ params: { id }, body, set }) => {
     const internId = Number(id);
     const index = interns.findIndex(i => Number(i.id) === internId);
@@ -43,7 +44,7 @@ const app = new Elysia()
       return { error: `Intern with ID ${id} not found!` };
     }
 
-    // Is line ki wajah se sirf wahi fields change hongi jo aap Postman se bhejoge
+     
     interns[index] = { 
         ...interns[index], 
         ...(body as any) 
